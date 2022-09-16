@@ -1,0 +1,36 @@
+version: '3'
+services:
+    express_app:
+        container_name: express_app
+        image: express_app
+        build: .
+        env_file: /.env
+        ports:
+            - $NODE_APP_EXTERNAL_PORT:$NODE_APP_INTERNAL_PORT
+        volumes:
+            - node_app:/app
+        networks:
+            - practice
+        depends_on:
+            - mongo
+    mongo:
+        container_name: mongo
+        image: mongo
+        env_file: /.env
+        ports:
+            - $MONGO_EXTERNAL_PORT:$MONGO_INTERNAL_PORT
+        volumes:
+            - mongodb:/data/db
+        networks:
+            - practice
+
+networks:
+    practice:
+        driver: bridge
+
+volumes:
+    node_app:
+        driver: local
+        
+    mongodb:
+        driver: local
