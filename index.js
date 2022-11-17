@@ -17,10 +17,7 @@ app.get('/', async (req, res) => {
 	const database = (await connectToDatabase()).db('docker');
 
 	const names = database.collection('names');
-
-	const result = names.find();
-
-	console.log('[GET RESULT] ', result);
+	const result = await names.find().toArray();
 
 	res.status(200).json(result);
 });
@@ -33,7 +30,6 @@ app.post('/', async (req, res) => {
 	const result = await names.insertOne({ name: req.body.name });
 
 	console.log('[POST RESULT] ', result);
-
 
 	res.status(201).json(result);
 });
